@@ -38,7 +38,7 @@ public static class DependencyInjection
         services.AddAuthorizationBuilder();
 
         services
-            .AddIdentityCore<ApplicationUser>()
+            .AddIdentityCore<Feminist>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddApiEndpoints();
