@@ -14,10 +14,12 @@ public class ApplicationDbContext : IdentityDbContext<Feminist>, IApplicationDbC
     public DbSet<TodoList> TodoLists => Set<TodoList>();
 
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
+    public DbSet<Collective> Collectives => Set<Collective>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
     }
 }
