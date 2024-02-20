@@ -1,0 +1,63 @@
+﻿using Feminancials.Application.Common.Models;
+using Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
+using Feminancials.Application.TodoItems.Commands.CreateTodoItem;
+using Feminancials.Application.TodoItems.Commands.DeleteTodoItem;
+using Feminancials.Application.TodoItems.Commands.UpdateTodoItem;
+using Feminancials.Application.TodoItems.Commands.UpdateTodoItemDetail;
+using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
+using Feminancials.Web.Services;
+
+namespace Feminancials.Web.Endpoints;
+
+public class Transactions : EndpointGroupBase
+{
+    private readonly CurrentUser _currentUser;
+
+    public Transactions(CurrentUser currentUser) : base()
+    {
+        _currentUser = currentUser;
+    }
+
+    public override void Map(WebApplication app)
+    {
+        Guard.Against.Null(_currentUser);
+
+        app.MapGroup(this)
+            .RequireAuthorization()
+            .MapGet(GetTransactions)
+            .MapPost(CreateTodoItem)
+            .MapPut(UpdateTodoItem, "{id}")
+            .MapPut(UpdateTodoItemDetail, "UpdateDetail/{id}")
+            .MapDelete(DeleteTodoItem, "{id}");
+    }
+
+    public Task<PaginatedList<TransaactionsVm>> GetTransactions(ISender sender, [AsParameters] GetTransactionsWithPaginationQuery query)
+    {
+        return sender.Send(query);
+    }
+
+    public Task<int> CreateTodoItem(ISender sender, CreateTodoItemCommand command)
+    {
+        return sender.Send(command);
+    }
+
+    public async Task<IResult> UpdateTodoItem(ISender sender, int id, UpdateTodoItemCommand command)
+    {
+        if (id != command.Id) return Results.BadRequest();
+        await sender.Send(command);
+        return Results.NoContent();
+    }
+
+    public async Task<IResult> UpdateTodoItemDetail(ISender sender, int id, UpdateTodoItemDetailCommand command)
+    {
+        if (id != command.Id) return Results.BadRequest();
+        await sender.Send(command);
+        return Results.NoContent();
+    }
+
+    public async Task<IResult> DeleteTodoItem(ISender sender, int id)
+    {
+        await sender.Send(new DeleteTodoItemCommand(id));
+        return Results.NoContent();
+    }
+}
