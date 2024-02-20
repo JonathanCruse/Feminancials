@@ -12,6 +12,7 @@ public class Transaction : BaseAuditableEntity
 {
     public Feminist Creditor { get; set; } = null!;
     public Collective Debtor { get; set; } = null!;
+    public required string Description { get; set; }
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
     public float Amount { get; set; }
     private bool _isDeleted;

@@ -11,7 +11,7 @@ public class Collective : BaseAuditableEntity
 {
     public ICollection<Feminist> Collaborators { get; set; } = new List<Feminist>();
     [MaxLength(100)]
-    public string Name { get; set; } = "";
+    public string Name { get; set; } = null!;
     [MaxLength(400)]
     public string? Description { get; set; }
     public IEnumerable<(Feminist feminist, float scale)> GetWeightedCollaborators ()

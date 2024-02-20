@@ -8,7 +8,7 @@ using Feminancials.Infrastructure.Identity;
 using Microsoft.Extensions.Logging;
 using static System.Formats.Asn1.AsnWriter;
 
-namespace Feminancials.Application.TodoItems.EventHandlers;
+namespace Feminancials.Application.Financials.EventHandlers;
 
 public class TransactionCreatedEventHandler : INotificationHandler<TransactionCreatedEvent>
 {
@@ -33,7 +33,7 @@ public class TransactionCreatedEventHandler : INotificationHandler<TransactionCr
 
         foreach ((Feminist feminist, float scale) item in debtor.GetWeightedCollaborators())
         {
-            var amount = (notification.Item.Creditor.Id == item.feminist.Id ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale);
+            var amount = notification.Item.Creditor.Id == item.feminist.Id ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale;
             _dbContext.Expenses.Add(new Expense
             {
                 Amount = amount,

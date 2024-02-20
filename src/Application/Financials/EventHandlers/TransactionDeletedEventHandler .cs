@@ -3,7 +3,7 @@ using Feminancials.Domain.Entities.FinancialsAggregate;
 using Feminancials.Domain.Events;
 using Microsoft.Extensions.Logging;
 
-namespace Feminancials.Application.TodoItems.EventHandlers;
+namespace Feminancials.Application.Financials.EventHandlers;
 
 public class TransactionDeletedEventHandler : INotificationHandler<TransactionCreatedEvent>
 {

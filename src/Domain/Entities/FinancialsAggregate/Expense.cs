@@ -10,7 +10,8 @@ public class Expense : BaseAuditableEntity
 {
     public Feminist Debtor { get; set; } = new Feminist();
     public float Amount { get; set; }
-    public Transaction Transaction = new Transaction();
+    public required Transaction Transaction;
+    
     public bool IsDeleted { get; set; }
 
 }
