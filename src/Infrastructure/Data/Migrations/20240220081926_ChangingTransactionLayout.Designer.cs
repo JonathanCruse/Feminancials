@@ -4,6 +4,7 @@ using Feminancials.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Feminancials.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240220081926_ChangingTransactionLayout")]
+    partial class ChangingTransactionLayout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,10 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DebtorId")
+                    b.Property<int>("DebtorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DebtorId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("LastModified")
@@ -63,12 +69,12 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TransactionId")
+                    b.Property<int>("TransactionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DebtorId");
+                    b.HasIndex("DebtorId1");
 
                     b.HasIndex("TransactionId");
 
@@ -95,7 +101,10 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Property<int>("CreditorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DebtorId")
+                    b.Property<int>("DebtorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DebtorId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("LastModified")
@@ -108,7 +117,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
                     b.HasIndex("CreditorId");
 
-                    b.HasIndex("DebtorId");
+                    b.HasIndex("DebtorId1");
 
                     b.ToTable("Transactions");
                 });
@@ -441,11 +450,13 @@ namespace Feminancials.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Debtor")
                         .WithMany("Expenses")
-                        .HasForeignKey("DebtorId");
+                        .HasForeignKey("DebtorId1");
 
                     b.HasOne("Feminancials.Domain.Entities.Aggregates.FinancialServer.Transaction", null)
                         .WithMany("Expenses")
-                        .HasForeignKey("TransactionId");
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Debtor");
                 });
@@ -460,7 +471,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
                     b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Debtor")
                         .WithMany()
-                        .HasForeignKey("DebtorId");
+                        .HasForeignKey("DebtorId1");
 
                     b.Navigation("Creditor");
 

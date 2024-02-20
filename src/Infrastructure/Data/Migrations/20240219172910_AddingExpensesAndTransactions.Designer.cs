@@ -4,6 +4,7 @@ using Feminancials.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Feminancials.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240219172910_AddingExpensesAndTransactions")]
+    partial class AddingExpensesAndTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,82 +38,6 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.HasIndex("CollectivesId");
 
                     b.ToTable("CollectiveFeminist");
-                });
-
-            modelBuilder.Entity("Feminancials.Domain.Entities.Aggregates.FinancialServer.Expense", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("Amount")
-                        .HasColumnType("real");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DebtorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TransactionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DebtorId");
-
-                    b.HasIndex("TransactionId");
-
-                    b.ToTable("Expenses");
-                });
-
-            modelBuilder.Entity("Feminancials.Domain.Entities.Aggregates.FinancialServer.Transaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("Amount")
-                        .HasColumnType("real");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreditorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DebtorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreditorId");
-
-                    b.HasIndex("DebtorId");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Feminancials.Domain.Entities.Collective", b =>
@@ -145,6 +72,55 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Collectives");
+                });
+
+            modelBuilder.Entity("Feminancials.Domain.Entities.Expense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreditorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreditorId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DebtorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DebtorId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TransactionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreditorId1");
+
+                    b.HasIndex("DebtorId1");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("Feminancials.Domain.Entities.TodoItem", b =>
@@ -222,6 +198,47 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TodoLists");
+                });
+
+            modelBuilder.Entity("Feminancials.Domain.Entities.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreditorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreditorId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DebtorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreditorId1");
+
+                    b.HasIndex("DebtorId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Feminancials.Infrastructure.Identity.Feminist", b =>
@@ -437,30 +454,19 @@ namespace Feminancials.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.Aggregates.FinancialServer.Expense", b =>
+            modelBuilder.Entity("Feminancials.Domain.Entities.Expense", b =>
                 {
-                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Debtor")
-                        .WithMany("Expenses")
-                        .HasForeignKey("DebtorId");
+                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Creditor")
+                        .WithMany()
+                        .HasForeignKey("CreditorId1");
 
-                    b.HasOne("Feminancials.Domain.Entities.Aggregates.FinancialServer.Transaction", null)
+                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Debtor")
+                        .WithMany()
+                        .HasForeignKey("DebtorId1");
+
+                    b.HasOne("Feminancials.Domain.Entities.Transaction", null)
                         .WithMany("Expenses")
                         .HasForeignKey("TransactionId");
-
-                    b.Navigation("Debtor");
-                });
-
-            modelBuilder.Entity("Feminancials.Domain.Entities.Aggregates.FinancialServer.Transaction", b =>
-                {
-                    b.HasOne("Feminancials.Domain.Entities.Collective", "Creditor")
-                        .WithMany()
-                        .HasForeignKey("CreditorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Debtor")
-                        .WithMany()
-                        .HasForeignKey("DebtorId");
 
                     b.Navigation("Creditor");
 
@@ -499,6 +505,23 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
                     b.Navigation("Colour")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Feminancials.Domain.Entities.Transaction", b =>
+                {
+                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Creditor")
+                        .WithMany()
+                        .HasForeignKey("CreditorId1");
+
+                    b.HasOne("Feminancials.Domain.Entities.Collective", "Debtor")
+                        .WithMany()
+                        .HasForeignKey("DebtorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creditor");
+
+                    b.Navigation("Debtor");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -552,17 +575,12 @@ namespace Feminancials.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.Aggregates.FinancialServer.Transaction", b =>
-                {
-                    b.Navigation("Expenses");
-                });
-
             modelBuilder.Entity("Feminancials.Domain.Entities.TodoList", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("Feminancials.Infrastructure.Identity.Feminist", b =>
+            modelBuilder.Entity("Feminancials.Domain.Entities.Transaction", b =>
                 {
                     b.Navigation("Expenses");
                 });
