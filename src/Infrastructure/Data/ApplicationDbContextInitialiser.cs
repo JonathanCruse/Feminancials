@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Feminancials.Domain.Constants;
 using Feminancials.Domain.Entities;
+using Feminancials.Domain.Entities.FinancialsAggregate;
 using Feminancials.Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -77,13 +78,21 @@ public class ApplicationDbContextInitialiser
 
         // Default users
         var administrator = new Feminist { UserName = "administrator@localhost", Email = "administrator@localhost" };
-
+        var feminist1 = new Feminist { UserName = "feminist1@localhost", Email = "feminist1@localhost" };
+        var feminist2 = new Feminist { UserName = "feminist2@localhost", Email = "feminist2@localhost" };
+        var feminist3 = new Feminist { UserName = "feminist3@localhost", Email = "feminist3@localhost" };
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
             await _userManager.CreateAsync(administrator, "Administrator1!");
+            await _userManager.CreateAsync(feminist1, "Administrator1!");
+            await _userManager.CreateAsync(feminist2, "Administrator1!");
+            await _userManager.CreateAsync(feminist3, "Administrator1!");
             if (!string.IsNullOrWhiteSpace(administratorRole.Name))
             {
                 await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
+                await _userManager.AddToRolesAsync(feminist1, new [] { administratorRole.Name });
+                await _userManager.AddToRolesAsync(feminist2, new [] { administratorRole.Name });
+                await _userManager.AddToRolesAsync(feminist3, new [] { administratorRole.Name });
             }
         }
 
@@ -102,7 +111,47 @@ public class ApplicationDbContextInitialiser
                     new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
                 }
             });
-
+            await _context.SaveChangesAsync();
+        }
+        var collective = new Domain.Entities.UserAggregate.Collective
+        {
+            Collaborators = [feminist1, feminist2, feminist3],
+            Name = "Das Kollektiv",
+            Description = "Das ist ein Test"
+        };
+        if (!_context.Collectives.Any())
+        {
+            _context.Collectives.Add(collective);
+            await _context.SaveChangesAsync();
+        }
+        if (!_context.Transactions.Any())
+        {
+            Transaction transaction = new Domain.Entities.FinancialsAggregate.Transaction
+            {
+                Creditor = feminist1,
+                Debtor = collective,
+                Expenses = new List<Expense>(),
+                Amount = 6.0f
+            };
+            transaction.Expenses =
+            [
+                new Expense { 
+                    Debtor = feminist1,
+                    Amount = -4f,
+                    Transaction = transaction
+                },
+                new Expense {
+                    Debtor = feminist2,
+                    Amount = 2f,
+                    Transaction = transaction
+                },
+                new Expense {
+                    Debtor = feminist3,
+                    Amount = 2f,
+                    Transaction = transaction
+                }
+            ];
+            _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
         }
     }

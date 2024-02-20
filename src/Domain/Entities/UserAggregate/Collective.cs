@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Feminancials.Infrastructure.Identity;
 
-namespace Feminancials.Domain.Entities;
+namespace Feminancials.Domain.Entities.UserAggregate;
 public class Collective : BaseAuditableEntity
 {
     public ICollection<Feminist> Collaborators { get; set; } = new List<Feminist>();

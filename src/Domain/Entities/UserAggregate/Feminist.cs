@@ -1,4 +1,5 @@
-﻿using Feminancials.Domain.Entities.Aggregates.FinancialServer;
+﻿using Feminancials.Domain.Entities.FinancialsAggregate;
+using Feminancials.Domain.Entities.UserAggregate;
 using Microsoft.AspNetCore.Identity;
 
 namespace Feminancials.Infrastructure.Identity;

@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 using Feminancials.Application.Common.Interfaces;
 using Feminancials.Domain.Entities;
-using Feminancials.Domain.Entities.Aggregates.FinancialServer;
+using Feminancials.Domain.Entities.FinancialsAggregate;
+using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
