@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using Feminancials.Application.Common.Interfaces;
 using Feminancials.Domain.Entities.FinancialsAggregate;
 using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Domain.Events;
 using Feminancials.Infrastructure.Identity;
 using Microsoft.Extensions.Logging;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Feminancials.Application.TodoItems.EventHandlers;
 
@@ -27,23 +29,19 @@ public class TransactionCreatedEventHandler : INotificationHandler<TransactionCr
 
         Collective debtor = _dbContext.Collectives
             .Include(collective => collective.Collaborators)
-            .AsNoTracking()
             .First(x => x.Id == notification.Item.Debtor.Id);
 
-        var amountPerFeminist = (notification.Item.Amount / debtor.Collaborators.Count());
-        foreach (Feminist f in debtor.Collaborators)
+        foreach ((Feminist feminist, float scale) item in debtor.GetWeightedCollaborators())
         {
-
+            var amount = (notification.Item.Creditor.Id == item.feminist.Id ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale);
             _dbContext.Expenses.Add(new Expense
             {
-                Amount = amountPerFeminist,
+                Amount = amount,
                 Transaction = notification.Item,
-                Debtor = f
+                Debtor = item.feminist
             });
+            item.feminist.CurrentDebt += amount;
         }
-
-        
-
         return _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

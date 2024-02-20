@@ -14,4 +14,9 @@ public class Collective : BaseAuditableEntity
     public string Name { get; set; } = "";
     [MaxLength(400)]
     public string? Description { get; set; }
+    public IEnumerable<(Feminist feminist, float scale)> GetWeightedCollaborators ()
+    {
+        var sum = Collaborators.Sum(x => x.MonthlyIncome);
+        return Collaborators.Select(x => (x, x.MonthlyIncome / Collaborators.Sum(x => x.MonthlyIncome)));
+    } 
 }

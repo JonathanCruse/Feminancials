@@ -14,8 +14,26 @@ public class Transaction : BaseAuditableEntity
     public Collective Debtor { get; set; } = null!;
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
     public float Amount { get; set; }
-    public void PublishTransaction()
+    private bool _isDeleted;
+    public bool IsDeleted
+    {
+        get { return _isDeleted; }
+        set
+        {
+            if (value)
+            {
+                DeleteTransaction();
+                _isDeleted = false;
+            }
+
+        }
+    }
+    public void ActivateTransaction()
     {
         AddDomainEvent(new TransactionCreatedEvent(this));
+    }
+    private void DeleteTransaction()
+    {
+        AddDomainEvent(new TransactionDeletedEvent(this));
     }
 }

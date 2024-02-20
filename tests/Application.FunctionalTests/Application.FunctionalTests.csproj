@@ -36,5 +36,10 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Web\Web.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="FinancialsAggregate\Commands\" />
+      <Folder Include="FinancialsAggregate\Queries\" />
+    </ItemGroup>
 
 </Project>
