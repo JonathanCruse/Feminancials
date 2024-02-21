@@ -3,6 +3,7 @@ using Feminancials.Domain.Constants;
 using Feminancials.Infrastructure.Data;
 using Feminancials.Infrastructure.Data.Interceptors;
 using Feminancials.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -47,7 +48,15 @@ public static class DependencyInjection
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+        {
+            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator));
+            options.AddPolicy(Policies.CanAccessCollective, policy => policy.Requirements.Add(new AccessCollectiveAuthorizationRequirement()));
+            options.AddPolicy(Policies.CanAccessTransaction, policy => policy.Requirements.Add(new AccessTransactionAuthorizationRequirement()));
+            options.AddPolicy(Policies.CanAccessExpense, policy => policy.Requirements.Add(new AccessExpenseAuthorizationRequirement()));
+        });
+        services.AddScoped<IAuthorizationHandler, AccessCollectiveAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, ExpenseAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, AccessTransactionAuthorizationHandler>();
 
         return services;
     }

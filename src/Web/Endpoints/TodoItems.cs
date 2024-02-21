@@ -20,6 +20,7 @@ public class TodoItems : EndpointGroupBase
             .MapDelete(DeleteTodoItem, "{id}");
     }
 
+    
     public Task<PaginatedList<TodoItemBriefDto>> GetTodoItemsWithPagination(ISender sender, [AsParameters] GetTodoItemsWithPaginationQuery query)
     {
         return sender.Send(query);

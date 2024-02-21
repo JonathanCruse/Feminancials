@@ -126,10 +126,11 @@ public class ApplicationDbContextInitialiser
         }
         if (!_context.Transactions.Any())
         {
-            Transaction transaction = new Domain.Entities.FinancialsAggregate.Transaction
+            Transaction transaction = new Transaction
             {
                 Creditor = feminist1,
                 Debtor = collective,
+                Description = "Das ist eine Beschribung",
                 Expenses = new List<Expense>(),
                 Amount = 6.0f
             };

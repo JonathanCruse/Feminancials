@@ -1,10 +1,13 @@
 ﻿using Feminancials.Application.Common.Interfaces;
 using Feminancials.Application.Common.Mappings;
 using Feminancials.Application.Common.Models;
+using Feminancials.Application.Common.Security;
 using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
+using Feminancials.Domain.Constants;
 
 namespace Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
 
+[Authorize(Policy = Policies.CanAccessTransaction)]
 public record GetTransactionsWithPaginationQuery : IRequest<PaginatedList<TransaactionsVm>>
 {
     public int CollectiveId { get; init; }
