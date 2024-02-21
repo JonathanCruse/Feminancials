@@ -5,6 +5,9 @@ using System.Reflection.Metadata;
 using Feminancials.Domain.Entities.FinancialsAggregate;
 using Feminancials.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Feminancials.Infrastructure.Identity;
+using Ardalis.GuardClauses;
+using Feminancials.Application.TodoLists.Commands.UpdateTodoList;
 
 public record AccessCollectiveAuthorizationRequirement() : IAuthorizationRequirement;
 public class AccessCollectiveAuthorizationHandler :
@@ -21,15 +24,26 @@ public class AccessCollectiveAuthorizationHandler :
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                    AccessCollectiveAuthorizationRequirement requirement)
     {
-        string userId = "";
-        var resourceId = 0;
-        Guard.Against.Null(userId);
-        if (
-        _context.Transactions
+        Guard.Against.Null(context.User);
+        Guard.Against.Null(context.User.Identity);
+        Guard.Against.Null(context.User.Identity.Name);
+        var resourceId = 1;
+        var transaction = _context.Transactions
             .Include(x => x.Debtor)
-            .ThenInclude(x => x.Collaborators)
-            .First(x => x.Id == resourceId && x.Debtor.Collaborators.Any(x => x.Id == userId))
-            is not null)
+            .AsNoTracking()
+            .Where(x => x.Id == resourceId)
+            .First();
+        var user = _context.Feminists
+            .Include(x => x.Collectives)
+            .AsNoTracking()
+            .First(x => x.UserName == context.User.Identity.Name);
+        Guard.Against.Null(user);
+
+        
+        
+
+
+        if (user.Collectives.Any(x => x.Id == transaction.Debtor.Id))
         {
             context.Succeed(requirement);
         }

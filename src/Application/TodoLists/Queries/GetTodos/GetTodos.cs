@@ -6,7 +6,6 @@ using Feminancials.Domain.Enums;
 
 namespace Feminancials.Application.TodoLists.Queries.GetTodos;
 
-[Authorize]
 [Authorize(Policy = Policies.CanAccessCollective)]
 public record GetTodosQuery : IRequest<TodosVm>;
 
