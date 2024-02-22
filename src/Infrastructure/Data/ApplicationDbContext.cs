@@ -24,7 +24,6 @@ public class ApplicationDbContext : IdentityDbContext<Feminist>, IApplicationDbC
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<Transaction>().Navigation(t => t.Expenses).AutoInclude();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         

@@ -4,10 +4,12 @@ using Feminancials.Application.Common.Models;
 using Feminancials.Application.Common.Security;
 using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Feminancials.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
 
-[Authorize(Policy = Policies.CanAccessTransaction)]
+
 public record GetTransactionsWithPaginationQuery : IRequest<PaginatedList<TransaactionsVm>>
 {
     public int CollectiveId { get; init; }
@@ -34,17 +36,27 @@ public class GetTransactionsWithPaginationQueryHandler : IRequestHandler<GetTran
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    public GetTransactionsWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper)
+    private readonly IAuthorizationService _authorizationService;
+    private readonly IUser _user;
+    public GetTransactionsWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper, IAuthorizationService authorizationService, IUser user)
     {
         _context = context;
         _mapper = mapper;
+        _authorizationService = authorizationService;
+        _user = user;
     }
 
     public async Task<PaginatedList<TransaactionsVm>> Handle(GetTransactionsWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Transactions
+        Guard.Against.Null(_user.ClaimsPrincipal);
+        var collective = _context.Collectives.Where(x => x.Id == request.CollectiveId).AsNoTracking().FirstOrDefault();
+        Guard.Against.Null(collective);
+        if (_authorizationService.AuthorizeAsync(_user.ClaimsPrincipal!, collective, Policies.CanAccessCollective).IsCompletedSuccessfully)
+
+            return await _context.Transactions
             .Where(x => x.Debtor.Id == request.CollectiveId)
             .ProjectTo<TransaactionsVm>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);
+        else throw new UnauthorizedAccessException();
     }
 }

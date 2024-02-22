@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 public record AccessExpenseAuthorizationRequirement() : IAuthorizationRequirement;
 public class ExpenseAuthorizationHandler :
-    AuthorizationHandler<AccessExpenseAuthorizationRequirement, Transaction>
+    AuthorizationHandler<AccessExpenseAuthorizationRequirement, Expense>
 {
     private readonly IApplicationDbContext _context;
 
@@ -20,7 +20,7 @@ public class ExpenseAuthorizationHandler :
 
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                    AccessExpenseAuthorizationRequirement requirement,
-                                                   Transaction resource)
+                                                   Expense resource)
     {
         string userId = "";
         Guard.Against.Null(userId);
