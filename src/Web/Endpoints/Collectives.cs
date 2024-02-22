@@ -20,7 +20,7 @@ public class Collectives : EndpointGroupBase
             .MapDelete(DeleteCollective, "{id}");
     }
 
-    public Task<PaginatedList<TransaactionsVm>> GetCollectives(ISender sender, [AsParameters] GetTransactionsWithPaginationQuery query)
+    public Task<PaginatedList<TransaactionsVm>> GetCollectives(ISender sender, [AsParameters] GetTransactionsQuery query)
     {
         return  sender.Send(query);
     }

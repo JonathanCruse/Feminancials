@@ -2,24 +2,24 @@
 using Feminancials.Application.Common.Mappings;
 using Feminancials.Application.Common.Models;
 using Feminancials.Application.Common.Security;
+using Feminancials.Application.Financials.Dtos;
 using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Feminancials.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
 
 
-public record GetTransactionsWithPaginationQuery : IRequest<PaginatedList<TransaactionsVm>>
+public record GetTransactionsByCollectiveQuery : IRequest<PaginatedList<TransactionDto>>
 {
     public int CollectiveId { get; init; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetTransactionsWithPaginationQueryValidator : AbstractValidator<GetTransactionsWithPaginationQuery>
+public class GetTransactionsByCollectiveQueryValidator : AbstractValidator<GetTransactionsByCollectiveQuery>
 {
-    public GetTransactionsWithPaginationQueryValidator()
+    public GetTransactionsByCollectiveQueryValidator()
     {
         RuleFor(x => x.CollectiveId)
             .GreaterThan(-1).WithMessage("Collective Id Invalid");
@@ -32,13 +32,13 @@ public class GetTransactionsWithPaginationQueryValidator : AbstractValidator<Get
     }
 }
 
-public class GetTransactionsWithPaginationQueryHandler : IRequestHandler<GetTransactionsWithPaginationQuery, PaginatedList<TransaactionsVm>>
+public class GetTransactionsByCollectiveQueryHandler : IRequestHandler<GetTransactionsByCollectiveQuery, PaginatedList<TransactionDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly IAuthorizationService _authorizationService;
     private readonly IUser _user;
-    public GetTransactionsWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper, IAuthorizationService authorizationService, IUser user)
+    public GetTransactionsByCollectiveQueryHandler(IApplicationDbContext context, IMapper mapper, IAuthorizationService authorizationService, IUser user)
     {
         _context = context;
         _mapper = mapper;
@@ -46,7 +46,7 @@ public class GetTransactionsWithPaginationQueryHandler : IRequestHandler<GetTran
         _user = user;
     }
 
-    public async Task<PaginatedList<TransaactionsVm>> Handle(GetTransactionsWithPaginationQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<TransactionDto>> Handle(GetTransactionsByCollectiveQuery request, CancellationToken cancellationToken)
     {
         Guard.Against.Null(_user.ClaimsPrincipal);
         var collective = _context.Collectives.Where(x => x.Id == request.CollectiveId).AsNoTracking().FirstOrDefault();
@@ -55,7 +55,7 @@ public class GetTransactionsWithPaginationQueryHandler : IRequestHandler<GetTran
 
             return await _context.Transactions
             .Where(x => x.Debtor.Id == request.CollectiveId)
-            .ProjectTo<TransaactionsVm>(_mapper.ConfigurationProvider)
+            .ProjectTo<TransactionDto>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);
         else throw new UnauthorizedAccessException();
     }

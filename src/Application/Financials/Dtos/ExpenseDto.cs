@@ -1,6 +1,6 @@
 ﻿using Feminancials.Domain.Entities.FinancialsAggregate;
 
-namespace Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
+namespace Feminancials.Application.Financials.Dtos;
 
 public class ExpenseDto
 {

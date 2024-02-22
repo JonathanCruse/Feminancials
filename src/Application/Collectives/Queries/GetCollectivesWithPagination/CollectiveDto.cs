@@ -1,4 +1,4 @@
-﻿using Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
+﻿using Feminancials.Application.Financials.Dtos;
 using Feminancials.Application.TodoLists.Queries.GetTodos;
 using Feminancials.Domain.Entities;
 using Feminancials.Domain.Entities.UserAggregate;

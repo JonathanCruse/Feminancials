@@ -1,7 +1,9 @@
 ﻿using System.Runtime.InteropServices;
+using Feminancials.Application.Financials.Dtos;
 using Feminancials.Domain.Constants;
 using Feminancials.Domain.Entities;
 using Feminancials.Domain.Entities.FinancialsAggregate;
+using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -115,10 +117,15 @@ public class ApplicationDbContextInitialiser
         }
         var collective = new Domain.Entities.UserAggregate.Collective
         {
-            Collaborators = [feminist1, feminist2, feminist3],
+            Collaborators = new List<FeministsCollectives>(),
             Name = "Das Kollektiv",
             Description = "Das ist ein Test"
         };
+        ICollection< FeministsCollectives> feministCollabs = [
+            new FeministsCollectives { Feminist = feminist1, Collective = collective }
+            , new FeministsCollectives { Feminist = feminist2, Collective = collective }
+            ,new FeministsCollectives { Feminist = feminist3, Collective = collective }];
+        collective.Collaborators = feministCollabs;
         if (!_context.Collectives.Any())
         {
             _context.Collectives.Add(collective);

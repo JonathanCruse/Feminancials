@@ -1,7 +1,7 @@
 ﻿using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Infrastructure.Identity;
 
-namespace Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
+namespace Feminancials.Application.Financials.Dtos;
 
 public class FeministDto
 {
