@@ -45,6 +45,7 @@ public class GetExpensesByFeministQueryHandler : IRequestHandler<GetExpensesByFe
 
     public async Task<PaginatedList<ExpenseDto>> Handle(GetExpensesByFeministQuery request, CancellationToken cancellationToken)
     {
+        await Task.Delay(1);
         throw new NotImplementedException();
     }
 }

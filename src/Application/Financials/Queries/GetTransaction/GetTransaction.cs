@@ -33,6 +33,7 @@ public class GetTransactionQueryHandler : IRequestHandler<GetTransactionQuery, T
 
     public async Task<TransactionExpandedDto> Handle(GetTransactionQuery request, CancellationToken cancellationToken)
     {
+        await Task.Delay(1);
         throw new NotImplementedException();
     }
 }

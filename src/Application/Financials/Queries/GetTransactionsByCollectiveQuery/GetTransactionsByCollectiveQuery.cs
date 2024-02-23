@@ -5,6 +5,7 @@ using Feminancials.Application.Common.Security;
 using Feminancials.Application.Financials.Dtos;
 using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Feminancials.Domain.Constants;
+using Feminancials.Domain.Entities.UserAggregate;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
@@ -49,8 +50,12 @@ public class GetTransactionsByCollectiveQueryHandler : IRequestHandler<GetTransa
     public async Task<PaginatedList<TransactionDto>> Handle(GetTransactionsByCollectiveQuery request, CancellationToken cancellationToken)
     {
         Guard.Against.Null(_user.ClaimsPrincipal);
+        Guard.Against.Null(_user.Id);
+
+
         var collective = _context.Collectives.Where(x => x.Id == request.CollectiveId).AsNoTracking().FirstOrDefault();
         Guard.Against.Null(collective);
+
         if (_authorizationService.AuthorizeAsync(_user.ClaimsPrincipal!, collective, Policies.CanAccessCollective).IsCompletedSuccessfully)
 
             return await _context.Transactions

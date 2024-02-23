@@ -1,5 +1,6 @@
 ﻿using Feminancials.Application.Common.Interfaces;
 using Feminancials.Domain.Entities.FinancialsAggregate;
+using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Domain.Events;
 using Microsoft.Extensions.Logging;
 
@@ -20,15 +21,7 @@ public class TransactionDeletedEventHandler : INotificationHandler<TransactionCr
     public Task Handle(TransactionCreatedEvent notification, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Feminancials Domain Event: {DomainEvent}", notification.GetType().Name);
-        var expenses = _dbContext.Expenses
-            .Include(expense => expense.Debtor)
-            .Where(x => x.Transaction.Id == notification.Item.Id);
-
-        foreach (Expense expense in expenses)
-        {
-            expense.IsDeleted = true;
-            expense.Debtor.CurrentDebt -= expense.Amount;
-        }
+        
         return _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

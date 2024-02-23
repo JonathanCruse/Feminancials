@@ -35,6 +35,7 @@ public class GetCollectiveDetailsQueryHandler : IRequestHandler<GetCollectiveDet
 
     public async Task<CollectiveExpandedDto> Handle(GetCollectiveDetailsQuery request, CancellationToken cancellationToken)
     {
+        await Task.Delay(1);
         throw new NotImplementedException();
     }
 }

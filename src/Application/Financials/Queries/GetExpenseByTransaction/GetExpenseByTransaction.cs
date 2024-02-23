@@ -44,6 +44,7 @@ public class GetExpenseByTransactionQueryHandler : IRequestHandler<GetExpenseByT
 
     public async Task<PaginatedList<ExpenseDto>> Handle(GetExpenseByTransactionQuery request, CancellationToken cancellationToken)
     {
+        await Task.Delay(1);
         throw new NotImplementedException();
     }
 }

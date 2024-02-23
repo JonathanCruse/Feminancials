@@ -45,6 +45,11 @@ public class GetCollectivesQueryHandler : IRequestHandler<GetCollectivesQuery, P
 
     public async Task<PaginatedList<CollectiveDto>> Handle(GetCollectivesQuery request, CancellationToken cancellationToken)
     {
+        await Task.Delay(1);
+
+        var collective = _context.Collectives
+            .Include(x => x.Collaborators)
+            .Where(x => x.Collaborators.Any(y => y.FeministId == request.FeministId));
         throw new NotImplementedException();
     }
 }

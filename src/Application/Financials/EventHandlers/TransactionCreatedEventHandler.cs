@@ -31,14 +31,14 @@ public class TransactionCreatedEventHandler : INotificationHandler<TransactionCr
             .Include(collective => collective.Collaborators)
             .First(x => x.Id == notification.Item.Debtor.Id);
 
-        foreach ((Feminist feminist, float scale) item in debtor.GetWeightedCollaborators())
+        foreach ((FeministsCollectives feminist, float scale) item in debtor.GetWeightedCollaborators())
         {
-            var amount = notification.Item.Creditor.Id == item.feminist.Id ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale;
+            var amount = notification.Item.CreditorId == item.feminist.FeministId ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale;
             _dbContext.Expenses.Add(new Expense
             {
                 Amount = amount,
                 Transaction = notification.Item,
-                Debtor = item.feminist
+                DebtorId = item.feminist.FeministId
             });
             item.feminist.CurrentDebt += amount;
         }
