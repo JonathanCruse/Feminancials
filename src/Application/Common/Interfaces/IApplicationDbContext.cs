@@ -14,6 +14,7 @@ public interface IApplicationDbContext
     DbSet<Expense> Expenses { get; }
     DbSet<Transaction> Transactions { get; }
     DbSet<Feminist> Feminists { get; }
+    DbSet<FeministsCollectives> FeministsCollectives { get; }
 
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

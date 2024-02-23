@@ -28,7 +28,7 @@ public class AccessTransactionAuthorizationHandler :
         _context.Transactions
             .Include(x => x.Debtor)
             .ThenInclude(x => x.Collaborators)
-            .First(x => x.Id == resource.Id && x.Debtor.Collaborators.Any(x => x.Id == userId))
+            .First(x => x.Id == resource.Id && x.Debtor.Collaborators.Any(x => x.FeministId == userId))
             is not null)
         {
             context.Succeed(requirement);

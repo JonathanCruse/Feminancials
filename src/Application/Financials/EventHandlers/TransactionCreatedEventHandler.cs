@@ -31,17 +31,17 @@ public class TransactionCreatedEventHandler : INotificationHandler<TransactionCr
             .Include(collective => collective.Collaborators)
             .First(x => x.Id == notification.Item.Debtor.Id);
 
-        foreach ((FeministsCollectives feminist, float scale) item in debtor.GetWeightedCollaborators())
-        {
-            var amount = notification.Item.CreditorId == item.feminist.FeministId ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale;
-            _dbContext.Expenses.Add(new Expense
-            {
-                Amount = amount,
-                Transaction = notification.Item,
-                DebtorId = item.feminist.FeministId
-            });
-            item.feminist.CurrentDebt += amount;
-        }
+        //foreach ((FeministsCollectives feminist, float scale) item in debtor.GetWeightedCollaborators())
+        //{
+        //    var amount = notification.Item.CreditorId == item.feminist.FeministId ? notification.Item.Amount * item.scale - notification.Item.Amount : notification.Item.Amount * item.scale;
+        //    _dbContext.Expenses.Add(new Expense
+        //    {
+        //        Amount = amount,
+        //        Transaction = notification.Item,
+        //        DebtorId = item.feminist.FeministId
+        //    });
+        //    item.feminist.CurrentDebt += amount;
+        //}
         return _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

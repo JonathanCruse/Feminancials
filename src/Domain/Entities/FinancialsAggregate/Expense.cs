@@ -9,9 +9,10 @@ namespace Feminancials.Domain.Entities.FinancialsAggregate;
 public class Expense : BaseAuditableEntity
 {
     public Feminist Debtor { get; set; } = new Feminist();
+    public string DebtorId { get; set; } = null!;
     public float Amount { get; set; }
-    public required Transaction Transaction;
-    
+    public Transaction Transaction { get; set; } = null!;
+    public int TransactionId { get; set; }
     public bool IsDeleted { get; set; }
 
 }

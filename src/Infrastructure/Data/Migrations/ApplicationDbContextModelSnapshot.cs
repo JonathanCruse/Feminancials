@@ -22,21 +22,6 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CollectiveFeminist", b =>
-                {
-                    b.Property<string>("CollaboratorsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CollectivesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CollaboratorsId", "CollectivesId");
-
-                    b.HasIndex("CollectivesId");
-
-                    b.ToTable("CollectiveFeminist");
-                });
-
             modelBuilder.Entity("Feminancials.Domain.Entities.FinancialsAggregate.Expense", b =>
                 {
                     b.Property<int>("Id")
@@ -55,6 +40,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DebtorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
@@ -66,7 +52,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TransactionId")
+                    b.Property<int>("TransactionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -235,6 +221,45 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.ToTable("Collectives");
                 });
 
+            modelBuilder.Entity("Feminancials.Domain.Entities.UserAggregate.FeministsCollectives", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CollectiveId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("CurrentDebt")
+                        .HasColumnType("real");
+
+                    b.Property<string>("FeministId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollectiveId");
+
+                    b.HasIndex("FeministId");
+
+                    b.ToTable("FeministsCollectives");
+                });
+
             modelBuilder.Entity("Feminancials.Infrastructure.Identity.Feminist", b =>
                 {
                     b.Property<string>("Id")
@@ -246,9 +271,6 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("CurrentDebt")
-                        .HasColumnType("real");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -439,32 +461,23 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CollectiveFeminist", b =>
-                {
-                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", null)
-                        .WithMany()
-                        .HasForeignKey("CollaboratorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Feminancials.Domain.Entities.UserAggregate.Collective", null)
-                        .WithMany()
-                        .HasForeignKey("CollectivesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Feminancials.Domain.Entities.FinancialsAggregate.Expense", b =>
                 {
                     b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Debtor")
                         .WithMany("Expenses")
-                        .HasForeignKey("DebtorId");
+                        .HasForeignKey("DebtorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Feminancials.Domain.Entities.FinancialsAggregate.Transaction", null)
+                    b.HasOne("Feminancials.Domain.Entities.FinancialsAggregate.Transaction", "Transaction")
                         .WithMany("Expenses")
-                        .HasForeignKey("TransactionId");
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Debtor");
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("Feminancials.Domain.Entities.FinancialsAggregate.Transaction", b =>
@@ -476,7 +489,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Feminancials.Domain.Entities.UserAggregate.Collective", "Debtor")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("DebtorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -518,6 +531,25 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
                     b.Navigation("Colour")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Feminancials.Domain.Entities.UserAggregate.FeministsCollectives", b =>
+                {
+                    b.HasOne("Feminancials.Domain.Entities.UserAggregate.Collective", "Collective")
+                        .WithMany("Collaborators")
+                        .HasForeignKey("CollectiveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Feminancials.Infrastructure.Identity.Feminist", "Feminist")
+                        .WithMany("Collectives")
+                        .HasForeignKey("FeministId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Collective");
+
+                    b.Navigation("Feminist");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -581,8 +613,17 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("Feminancials.Domain.Entities.UserAggregate.Collective", b =>
+                {
+                    b.Navigation("Collaborators");
+
+                    b.Navigation("Transactions");
+                });
+
             modelBuilder.Entity("Feminancials.Infrastructure.Identity.Feminist", b =>
                 {
+                    b.Navigation("Collectives");
+
                     b.Navigation("Expenses");
                 });
 #pragma warning restore 612, 618

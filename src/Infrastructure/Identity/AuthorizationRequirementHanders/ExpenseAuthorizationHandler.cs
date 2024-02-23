@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using Feminancials.Domain.Entities.FinancialsAggregate;
 using Feminancials.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 public record AccessExpenseAuthorizationRequirement() : IAuthorizationRequirement;
 public class ExpenseAuthorizationHandler :
@@ -22,13 +23,20 @@ public class ExpenseAuthorizationHandler :
                                                    AccessExpenseAuthorizationRequirement requirement,
                                                    Expense resource)
     {
-        string userId = "";
-        Guard.Against.Null(userId);
+        Guard.Against.Null(context.User);
+        Guard.Against.Null(context.User.Identity);
+        Guard.Against.Null(context.User.Identity.Name);
+
+        var join = from collective in _context.Collectives
+                   join transaction in _context.Transactions on collective.Id equals transaction.DebtorId
+                   select new { collective, transaction };
+                   
+
         if (
         _context.Transactions
             .Include(x => x.Debtor)
             .ThenInclude(x => x.Collaborators)
-            .First(x => x.Id == resource.Id && x.Debtor.Collaborators.Any(x => x.Id == userId))
+            .First(x => x.Id == resource.Id && x.Debtor.Collaborators.Any(x => x.FeministId == ""))
             is not null)
         {
             context.Succeed(requirement);

@@ -6,14 +6,14 @@ using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 namespace Feminancials.Application.Collectives.Queries.GetCollectivesWithPagination;
 
-public record GetCollectivesWithPaginationQuery : IRequest<PaginatedList<CollectiveDto>>
+public record GetCollectives : IRequest<PaginatedList<CollectiveDto>>
 {
     public string FeministId { get; init; } = null!;
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetCollectivesWithPaginationQueryValidator : AbstractValidator<GetCollectivesWithPaginationQuery>
+public class GetCollectivesWithPaginationQueryValidator : AbstractValidator<GetCollectives>
 {
     public GetCollectivesWithPaginationQueryValidator()
     {
@@ -28,7 +28,7 @@ public class GetCollectivesWithPaginationQueryValidator : AbstractValidator<GetC
     }
 }
 
-public class GetCollectivesWithPaginationQueryHandler : IRequestHandler<GetCollectivesWithPaginationQuery, PaginatedList<CollectiveDto>>
+public class GetCollectivesWithPaginationQueryHandler : IRequestHandler<GetCollectives, PaginatedList<CollectiveDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -39,12 +39,12 @@ public class GetCollectivesWithPaginationQueryHandler : IRequestHandler<GetColle
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<CollectiveDto>> Handle(GetCollectivesWithPaginationQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<CollectiveDto>> Handle(GetCollectives request, CancellationToken cancellationToken)
     {
         var feminist = _context.Feminists.First(x => x.Id == request.FeministId);
         Guard.Against.Null(feminist);
 
-        return await _context.Collectives.Where(x => x.Collaborators.Any(y => y.Id == feminist.Id))
+        return await _context.Collectives.Where(x => x.Collaborators.Any(y => y.FeministId == feminist.Id))
             .OrderBy(x => x.Created)
             .ProjectTo<CollectiveDto>(_mapper.ConfigurationProvider)
             .PaginatedListAsync(request.PageNumber, request.PageSize);

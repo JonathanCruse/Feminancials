@@ -11,25 +11,30 @@ using Feminancials.Application.TodoLists.Commands.UpdateTodoList;
 using Feminancials.Application.TodoLists.Commands.CreateTodoList;
 using Feminancials.Domain.Entities.UserAggregate;
 
-public record AccessCollectiveAuthorizationRequirement() : IAuthorizationRequirement;
-public class AccessCollectiveAuthorizationHandler :
-    AuthorizationHandler<AccessCollectiveAuthorizationRequirement, Collective>
+public record AccessFeministAuthorizationRequirement() : IAuthorizationRequirement;
+public class FeministAuthorizationHandler :
+    AuthorizationHandler<AccessFeministAuthorizationRequirement, Feminist>
 {
     private readonly IApplicationDbContext _context;
 
-    public AccessCollectiveAuthorizationHandler(IApplicationDbContext context) : base()
+    public FeministAuthorizationHandler(IApplicationDbContext context) : base()
     {
         _context = context;
     }
 
 
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-                                                   AccessCollectiveAuthorizationRequirement requirement,
-                                                   Collective resource)
+                                                   AccessFeministAuthorizationRequirement requirement,
+                                                    Feminist resource)
     {
         Guard.Against.Null(context.User);
         Guard.Against.Null(context.User.Identity);
         Guard.Against.Null(context.User.Identity.Name);
+        //var transaction = _context.Transactions
+        //    .Include(x => x.Debtor)
+        //    .AsNoTracking()
+        //    .Where(x => x.CreditorId == resource.Id)
+        //    .First();
         //var user = _context.Feminists
         //    .Include(x => x.Collectives)
         //    .AsNoTracking()
@@ -37,10 +42,10 @@ public class AccessCollectiveAuthorizationHandler :
         //Guard.Against.Null(user);
 
 
-        //if (_context.FeministsCollectives
-        //    .Include(x => x.Collective)
-        //    .Where(x => x.FeministId == user.Id)
-        //    .Any(x => x.CollectiveId == resource.Id))
+
+
+
+        //if (user.Collectives.Any(x => x.Id == transaction.Debtor.Id))
         //{
         //    context.Succeed(requirement);
         //}

@@ -1,4 +1,7 @@
-﻿using Feminancials.Application.Common.Models;
+﻿using Feminancials.Application.Collectives.Queries.GetCollectivesWithPagination;
+using Feminancials.Application.Common.Models;
+using Feminancials.Application.Financials.Dtos;
+using Feminancials.Application.Financials.Queries.GetTransaction;
 using Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
 using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Feminancials.Application.TodoLists.Commands.CreateTodoList;
@@ -20,7 +23,7 @@ public class Collectives : EndpointGroupBase
             .MapDelete(DeleteCollective, "{id}");
     }
 
-    public Task<PaginatedList<TransaactionsVm>> GetCollectives(ISender sender, [AsParameters] GetTransactionsQuery query)
+    public Task<PaginatedList<CollectiveDto>> GetCollectives(ISender sender, [AsParameters] GetCollectives query)
     {
         return  sender.Send(query);
     }
