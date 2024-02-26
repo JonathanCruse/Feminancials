@@ -47,10 +47,23 @@ dotnet new install Clean.Architecture.Solution.Template::8.0.3
 
 ## Test
 
-The solution contains unit, integration, and functional tests.
+The solution contains unit, integration, functional, and acceptance tests.
 
-To run the tests:
+To run the unit, integration, and functional tests (excluding acceptance tests):
 ```bash
+dotnet test --filter "FullyQualifiedName!~AcceptanceTests"
+```
+
+To run the acceptance tests, first start the application:
+
+```bash
+cd .\src\Web\
+dotnet run
+```
+
+Then, in a new console, run the tests:
+```bash
+cd .\src\Web\
 dotnet test
 ```
 

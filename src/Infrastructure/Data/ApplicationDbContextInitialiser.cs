@@ -1,9 +1,6 @@
 ﻿using System.Runtime.InteropServices;
-using Feminancials.Application.Financials.Dtos;
 using Feminancials.Domain.Constants;
 using Feminancials.Domain.Entities;
-using Feminancials.Domain.Entities.FinancialsAggregate;
-using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -31,10 +28,10 @@ public class ApplicationDbContextInitialiser
 {
     private readonly ILogger<ApplicationDbContextInitialiser> _logger;
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<Feminist> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<Feminist> userManager, RoleManager<IdentityRole> roleManager)
+    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _logger = logger;
         _context = context;
@@ -59,8 +56,7 @@ public class ApplicationDbContextInitialiser
     {
         try
         {
-            // await TrySeedAsync();
-            await Task.Delay(1);
+            await TrySeedAsync();
         }
         catch (Exception ex)
         {
@@ -80,13 +76,14 @@ public class ApplicationDbContextInitialiser
         }
 
         // Default users
-        var administrator = new Feminist { UserName = "admin@localhost", Email = "admin@localhost" };
+        var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
+
         if (_userManager.Users.All(u => u.UserName != administrator.UserName))
         {
-            await _userManager.CreateAsync(administrator, "admin!");
+            await _userManager.CreateAsync(administrator, "Administrator1!");
             if (!string.IsNullOrWhiteSpace(administratorRole.Name))
             {
-                await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
+                await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
             }
         }
 
@@ -105,9 +102,8 @@ public class ApplicationDbContextInitialiser
                     new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
                 }
             });
+
+            await _context.SaveChangesAsync();
         }
-
-        await _context.SaveChangesAsync();
-
     }
 }
