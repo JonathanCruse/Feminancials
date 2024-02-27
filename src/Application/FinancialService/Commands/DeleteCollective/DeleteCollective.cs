@@ -2,7 +2,7 @@
 
 namespace Feminancials.Application.FinancialService.Commands.DeleteCollective;
 
-public record DeleteCollectiveCommand : IRequest<object>
+public record DeleteCollectiveCommand : IRequest
 {
 }
 
@@ -13,7 +13,7 @@ public class DeleteCollectiveCommandValidator : AbstractValidator<DeleteCollecti
     }
 }
 
-public class DeleteCollectiveCommandHandler : IRequestHandler<DeleteCollectiveCommand, object>
+public class DeleteCollectiveCommandHandler : IRequestHandler<DeleteCollectiveCommand>
 {
     private readonly IApplicationDbContext _context;
 
@@ -22,7 +22,7 @@ public class DeleteCollectiveCommandHandler : IRequestHandler<DeleteCollectiveCo
         _context = context;
     }
 
-    public async Task<object> Handle(DeleteCollectiveCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCollectiveCommand request, CancellationToken cancellationToken)
     {
         await Task.Delay(1);
         throw new NotImplementedException();
