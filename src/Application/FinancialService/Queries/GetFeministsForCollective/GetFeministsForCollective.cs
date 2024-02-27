@@ -4,7 +4,7 @@ using Feminancials.Application.Common.Models;
 
 namespace Feminancials.Application.FinancialService.Queries.GetFeministsForCollective;
 
-public record GetFeministsForCollectiveQuery : IRequest<PaginatedList<FeministDto>>
+public record GetFeministsForCollectiveQuery(int CollectiveId) : IRequest<PaginatedList<FeministDto>>
 {
 }
 

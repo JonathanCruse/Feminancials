@@ -2,7 +2,7 @@
 
 namespace Feminancials.Application.FinancialService.Commands.DeleteCollective;
 
-public record DeleteCollectiveCommand : IRequest
+public record DeleteCollectiveCommand(int id) : IRequest
 {
 }
 

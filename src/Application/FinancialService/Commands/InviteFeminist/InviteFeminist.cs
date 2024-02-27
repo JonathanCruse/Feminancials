@@ -2,7 +2,7 @@
 
 namespace Feminancials.Application.FinancialService.Commands.InviteFeminist;
 
-public record InviteFeministCommand : IRequest<int>
+public record InviteFeministCommand(string Email, int CollectiveId) : IRequest<int>
 {
 }
 
@@ -10,6 +10,10 @@ public class InviteFeministCommandValidator : AbstractValidator<InviteFeministCo
 {
     public InviteFeministCommandValidator()
     {
+        RuleFor(x => x.Email)
+            .NotNull()
+            .NotEmpty()
+            .WithMessage("must be email format");
     }
 }
 

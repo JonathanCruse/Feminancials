@@ -23,7 +23,8 @@ public class Feminists : EndpointGroupBase
         app.MapGroup(this)
             .RequireAuthorization()
             .MapGet(GetFeminists)
-            .MapPost(CreateFeminist);
+            .MapPost(CreateFeminist)
+            ;
     }
 
     public Task<PaginatedList<FeministDto>> GetFeminists(ISender sender, [AsParameters] GetFeministsForCollectiveQuery query)

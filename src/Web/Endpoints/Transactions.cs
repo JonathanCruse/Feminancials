@@ -24,28 +24,29 @@ public class Transactions : EndpointGroupBase
     {
         app.MapGroup(this)
             .RequireAuthorization()
+            .MapGet(GetTransaction, "{id}")
             .MapGet(GetTransactions)
             .MapPost(CreateTransaction)
             .MapDelete(DeleteTransaction, "{id}");
-            //.MapGet("single", GetTransaction);
     }
 
     public Task<PaginatedList<TransactionDto>> GetTransactions(ISender sender, [AsParameters] GetTransactionsForCollectiveQuery query)
     {
         return sender.Send(query);
     }
-    public Task<TransactionDto> GetTransaction(ISender sender, [AsParameters] GetTransactionForExpenseQuery query)
+    public Task<TransactionDto> GetTransaction(ISender sender, int id)
     {
-        return sender.Send(query);
+        return sender.Send(new GetTransactionForExpenseQuery(id));
     }
 
     public Task<int> CreateTransaction(ISender sender, CreateTransactionCommand command)
     {
         return sender.Send(command);
     }
-    public Task DeleteTransaction(ISender sender, DeleteTransactionCommand command)
+    public async Task<IResult> DeleteTransaction(ISender sender, int id)
     {
-        return sender.Send(command);
+        await sender.Send(new DeleteTransactionCommand (id));
+        return Results.NoContent();
     }
 
 }

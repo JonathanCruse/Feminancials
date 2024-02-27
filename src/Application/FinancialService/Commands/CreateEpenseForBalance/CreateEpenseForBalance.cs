@@ -1,15 +1,20 @@
-﻿using Feminancials.Application.Common.Interfaces;
+﻿using System.Reflection.Metadata.Ecma335;
+using Feminancials.Application.Common.Interfaces;
 
 namespace Feminancials.Application.FinancialService.Commands.CreateEpenseForBalance;
 
-public record CreateEpenseForBalanceCommand : IRequest<int>
+public record CreateEpenseForBalanceCommand(float Amount) : IRequest<int>
 {
+
 }
 
 public class CreateEpenseForBalanceCommandValidator : AbstractValidator<CreateEpenseForBalanceCommand>
 {
     public CreateEpenseForBalanceCommandValidator()
     {
+        RuleFor(x => x.Amount)
+            .GreaterThan(0)
+            .WithMessage("Must be positive");
     }
 }
 

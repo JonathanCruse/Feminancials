@@ -2,7 +2,7 @@
 
 namespace Feminancials.Application.FinancialService.Commands.DeleteTransaction;
 
-public record DeleteTransactionCommand : IRequest<object>
+public record DeleteTransactionCommand(int Id) : IRequest<object>
 {
 }
 

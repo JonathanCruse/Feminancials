@@ -2,7 +2,7 @@
 
 namespace Feminancials.Application.FinancialService.Commands.DeleteEpenseForBalance;
 
-public record DeleteEpenseForBalanceCommand : IRequest<object>
+public record DeleteEpenseForBalanceCommand(int Id) : IRequest<object>
 {
 }
 

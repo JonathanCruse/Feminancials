@@ -4,7 +4,7 @@ using Feminancials.Application.Common.Models;
 
 namespace Feminancials.Application.FinancialService.Queries.GetTransactionsForCollective;
 
-public record GetTransactionsForCollectiveQuery : IRequest<PaginatedList<TransactionDto>>
+public record GetTransactionsForCollectiveQuery(int CollectiveId) : IRequest<PaginatedList<TransactionDto>>
 {
 }
 

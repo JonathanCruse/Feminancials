@@ -27,6 +27,7 @@ public class Expenses : EndpointGroupBase
             .MapGet(GetExpenses)
             .MapPost(CreateExpense)
             .MapDelete(DeleteExpense, "{id}");
+            ;
     }
 
     public Task<PaginatedList<ExpenseDto>> GetExpenses(ISender sender, [AsParameters] GetExpensesForFeministQuery query)
@@ -38,9 +39,10 @@ public class Expenses : EndpointGroupBase
     {
         return sender.Send(command);
     }
-    public Task DeleteExpense(ISender sender, DeleteEpenseForBalanceCommand command)
+    public async Task<IResult> DeleteExpense(ISender sender, int id)
     {
-        return sender.Send(command);
+        await sender.Send(new DeleteEpenseForBalanceCommand(id));
+        return Results.NoContent();
     }
 
 

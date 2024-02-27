@@ -3,8 +3,9 @@ using Feminancials.Application.Common.Interfaces;
 using Feminancials.Application.Common.Models;
 namespace Feminancials.Application.FinancialService.Queries.GetTransactionForExpense;
 
-public record GetTransactionForExpenseQuery : IRequest<TransactionDto>
+public record GetTransactionForExpenseQuery(int ExpenseId) : IRequest<TransactionDto>
 {
+
 }
 
 public class GetTransactionForExpenseQueryValidator : AbstractValidator<GetTransactionForExpenseQuery>
