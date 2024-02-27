@@ -1,5 +1,6 @@
 ﻿using Feminancials.Application.Common.Interfaces;
 using Feminancials.Domain.Constants;
+using Feminancials.Domain.Entities;
 using Feminancials.Infrastructure.Data;
 using Feminancials.Infrastructure.Data.Interceptors;
 using Feminancials.Infrastructure.Identity;
@@ -33,7 +34,7 @@ public static class DependencyInjection
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services
-            .AddDefaultIdentity<ApplicationUser>()
+            .AddDefaultIdentity<Feminist>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 

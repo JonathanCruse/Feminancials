@@ -1,4 +1,5 @@
 ﻿using Feminancials.Domain.Constants;
+using Feminancials.Domain.Entities;
 using Feminancials.Infrastructure.Data;
 using Feminancials.Infrastructure.Identity;
 using MediatR;
@@ -63,9 +64,9 @@ public partial class Testing
     {
         using var scope = _scopeFactory.CreateScope();
 
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Feminist>>();
 
-        var user = new ApplicationUser { UserName = userName, Email = userName };
+        var user = new Feminist { UserName = userName, Email = userName };
 
         var result = await userManager.CreateAsync(user, password);
 

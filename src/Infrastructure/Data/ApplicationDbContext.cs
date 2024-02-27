@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Feminancial.Domain.Entities;
 using Feminancials.Application.Common.Interfaces;
 using Feminancials.Domain.Entities;
 using Feminancials.Infrastructure.Identity;
@@ -7,13 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Feminancials.Infrastructure.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<Feminist>, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<TodoList> TodoLists => Set<TodoList>();
 
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
+    public DbSet<Collective> Collectives => Set<Collective>();
+    public DbSet<Feminist> Feminists => Set<Feminist>();
+    public DbSet<FeministCollective> FeministCollectives => Set<FeministCollective>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

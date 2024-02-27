@@ -1,5 +1,6 @@
 ﻿using Feminancials.Application.Common.Interfaces;
 using Feminancials.Application.Common.Models;
+using Feminancials.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +9,13 @@ namespace Feminancials.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
+    private readonly UserManager<Feminist> _userManager;
+    private readonly IUserClaimsPrincipalFactory<Feminist> _userClaimsPrincipalFactory;
     private readonly IAuthorizationService _authorizationService;
 
     public IdentityService(
-        UserManager<ApplicationUser> userManager,
-        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
+        UserManager<Feminist> userManager,
+        IUserClaimsPrincipalFactory<Feminist> userClaimsPrincipalFactory,
         IAuthorizationService authorizationService)
     {
         _userManager = userManager;
@@ -31,7 +32,7 @@ public class IdentityService : IIdentityService
 
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
     {
-        var user = new ApplicationUser
+        var user = new Feminist
         {
             UserName = userName,
             Email = userName,
@@ -72,7 +73,7 @@ public class IdentityService : IIdentityService
         return user != null ? await DeleteUserAsync(user) : Result.Success();
     }
 
-    public async Task<Result> DeleteUserAsync(ApplicationUser user)
+    public async Task<Result> DeleteUserAsync(Feminist user)
     {
         var result = await _userManager.DeleteAsync(user);
 
