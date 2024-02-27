@@ -8,5 +8,7 @@ namespace Feminancial.Domain.Entities;
 public class Collective : BaseAuditableEntity
 {
     public string Name { get; set; } = null!;
+    public virtual ICollection<FeministCollective> CollectivesFeminists { get; set; } = new List<FeministCollective>();
+
 
 }

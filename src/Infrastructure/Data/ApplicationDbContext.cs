@@ -18,6 +18,8 @@ public class ApplicationDbContext : IdentityDbContext<Feminist>, IApplicationDbC
     public DbSet<Collective> Collectives => Set<Collective>();
     public DbSet<Feminist> Feminists => Set<Feminist>();
     public DbSet<FeministCollective> FeministCollectives => Set<FeministCollective>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<Expense> Expenses => Set<Expense>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
