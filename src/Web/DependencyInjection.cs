@@ -32,7 +32,7 @@ public static class DependencyInjection
 
         services.AddOpenApiDocument((configure, sp) =>
         {
-            configure.Title = "Feminancials API";
+            configure.Title = "Feminancial API";
 
         });
 

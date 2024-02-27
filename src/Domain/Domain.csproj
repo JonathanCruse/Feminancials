@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Feminancials.Domain</RootNamespace>
-    <AssemblyName>Feminancials.Domain</AssemblyName>
+    <RootNamespace>Feminancial.Domain</RootNamespace>
+    <AssemblyName>Feminancial.Domain</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

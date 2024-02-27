@@ -4,8 +4,8 @@
     <SpaRoot>ClientApp\</SpaRoot>
     <SpaProxyServerUrl>https://localhost:44447</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
-    <RootNamespace>Feminancials.Web</RootNamespace>
-    <AssemblyName>Feminancials.Web</AssemblyName>
+    <RootNamespace>Feminancial.Web</RootNamespace>
+    <AssemblyName>Feminancial.Web</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

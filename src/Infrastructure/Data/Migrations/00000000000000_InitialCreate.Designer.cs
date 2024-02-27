@@ -25,7 +25,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.TodoItem", b =>
+            modelBuilder.Entity("Feminancial.Domain.Entities.TodoItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.ToTable("TodoItems");
                 });
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.TodoList", b =>
+            modelBuilder.Entity("Feminancial.Domain.Entities.TodoList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,7 +102,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.ToTable("TodoLists");
                 });
 
-            modelBuilder.Entity("Feminancials.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Feminancial.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -304,9 +304,9 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.TodoItem", b =>
+            modelBuilder.Entity("Feminancial.Domain.Entities.TodoItem", b =>
                 {
-                    b.HasOne("Feminancials.Domain.Entities.TodoList", "List")
+                    b.HasOne("Feminancial.Domain.Entities.TodoList", "List")
                         .WithMany("Items")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,9 +315,9 @@ namespace Feminancials.Infrastructure.Data.Migrations
                     b.Navigation("List");
                 });
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.TodoList", b =>
+            modelBuilder.Entity("Feminancial.Domain.Entities.TodoList", b =>
                 {
-                    b.OwnsOne("Feminancials.Domain.ValueObjects.Colour", "Colour", b1 =>
+                    b.OwnsOne("Feminancial.Domain.ValueObjects.Colour", "Colour", b1 =>
                         {
                             b1.Property<int>("TodoListId")
                                 .HasColumnType("int");
@@ -349,7 +349,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Feminancials.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Feminancial.Infrastructure.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -358,7 +358,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Feminancials.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Feminancial.Infrastructure.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,7 +373,7 @@ namespace Feminancials.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Feminancials.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Feminancial.Infrastructure.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -382,14 +382,14 @@ namespace Feminancials.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Feminancials.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Feminancial.Infrastructure.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Feminancials.Domain.Entities.TodoList", b =>
+            modelBuilder.Entity("Feminancial.Domain.Entities.TodoList", b =>
                 {
                     b.Navigation("Items");
                 });

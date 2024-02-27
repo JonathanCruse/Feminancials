@@ -4,4 +4,5 @@ namespace Feminancials.Infrastructure.Identity;
 
 public class ApplicationUser : IdentityUser
 {
+
 }
