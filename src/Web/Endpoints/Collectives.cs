@@ -42,4 +42,10 @@ public class Collectives : EndpointGroupBase
         return Results.NoContent();
     }
 
+    public async Task<IResult> DeleteSomethingElseCollective(ISender sender, int id)
+    {
+        await sender.Send(new DeleteCollectiveCommand(id));
+        return Results.NoContent();
+    }
+
 }
