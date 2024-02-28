@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
+using Feminancial.Domain.Entities;
 using Feminancials.Application.Common.Interfaces;
 using Feminancials.Domain.Entities;
-using Feminancials.Domain.Entities.FinancialsAggregate;
-using Feminancials.Domain.Entities.UserAggregate;
 using Feminancials.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,17 +16,15 @@ public class ApplicationDbContext : IdentityDbContext<Feminist>, IApplicationDbC
 
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
     public DbSet<Collective> Collectives => Set<Collective>();
-    public DbSet<Expense> Expenses => Set<Expense>();
-    public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Feminist> Feminists => Set<Feminist>();
-    public DbSet<FeministsCollectives> FeministsCollectives => Set<FeministsCollectives>();
+    public DbSet<FeministCollective> FeministCollectives => Set<FeministCollective>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<Expense> Expenses => Set<Expense>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        
-
+        builder
+        .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

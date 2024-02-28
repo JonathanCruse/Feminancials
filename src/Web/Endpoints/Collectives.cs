@@ -1,13 +1,18 @@
-﻿using Feminancials.Application.Collectives.Queries.GetCollectivesWithPagination;
-using Feminancials.Application.Common.Models;
-using Feminancials.Application.Financials.Dtos;
-using Feminancials.Application.Financials.Queries.GetTransaction;
-using Feminancials.Application.Financials.Queries.GetTransactionsWithPagination;
+﻿using Feminancials.Application.Common.Models;
+using Feminancials.Application.FinancialService.Commands.CreateCollective;
+using Feminancials.Application.FinancialService.Commands.DeleteCollective;
+using Feminancials.Application.FinancialService.Dtos;
+using Feminancials.Application.FinancialService.Queries.GetBalanceForFeminist;
+using Feminancials.Application.FinancialService.Queries.GetCollectivesForFeminist;
+using Feminancials.Application.FinancialService.Queries.GetExpensesForFeminist;
+using Feminancials.Application.FinancialService.Queries.GetFeministsForCollective;
+using Feminancials.Application.FinancialService.Queries.GetTransactionForExpense;
+using Feminancials.Application.FinancialService.Queries.GetTransactionsForCollective;
+using Feminancials.Application.TodoItems.Commands.CreateTodoItem;
+using Feminancials.Application.TodoItems.Commands.DeleteTodoItem;
+using Feminancials.Application.TodoItems.Commands.UpdateTodoItem;
+using Feminancials.Application.TodoItems.Commands.UpdateTodoItemDetail;
 using Feminancials.Application.TodoItems.Queries.GetTodoItemsWithPagination;
-using Feminancials.Application.TodoLists.Commands.CreateTodoList;
-using Feminancials.Application.TodoLists.Commands.DeleteTodoList;
-using Feminancials.Application.TodoLists.Commands.UpdateTodoList;
-using Feminancials.Application.TodoLists.Queries.GetTodos;
 
 namespace Feminancials.Web.Endpoints;
 
@@ -19,30 +24,22 @@ public class Collectives : EndpointGroupBase
             .RequireAuthorization()
             .MapGet(GetCollectives)
             .MapPost(CreateCollective)
-            .MapPut(UpdateCollective, "{id}")
             .MapDelete(DeleteCollective, "{id}");
+            ;
     }
 
-    public Task<PaginatedList<CollectiveDto>> GetCollectives(ISender sender, [AsParameters] GetCollectives query)
+    public Task<PaginatedList<CollectiveDto>> GetCollectives(ISender sender, [AsParameters] GetCollectivesForFeministQuery query)
     {
-        return  sender.Send(query);
+        return sender.Send(query);
     }
-
-    public Task<int> CreateCollective(ISender sender, CreateTodoListCommand command)
+    public Task<int> CreateCollective(ISender sender, CreateCollectiveCommand command)
     {
         return sender.Send(command);
     }
-
-    public async Task<IResult> UpdateCollective(ISender sender, int id, UpdateTodoListCommand command)
-    {
-        if (id != command.Id) return Results.BadRequest();
-        await sender.Send(command);
-        return Results.NoContent();
-    }
-
     public async Task<IResult> DeleteCollective(ISender sender, int id)
     {
-        await sender.Send(new DeleteTodoListCommand(id));
+        await sender.Send(new DeleteCollectiveCommand (id));
         return Results.NoContent();
     }
+
 }

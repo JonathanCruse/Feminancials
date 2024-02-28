@@ -1,4 +1,5 @@
 ﻿using Feminancials.Domain.Constants;
+using Feminancials.Domain.Entities;
 using Feminancials.Infrastructure.Data;
 using Feminancials.Infrastructure.Identity;
 using MediatR;

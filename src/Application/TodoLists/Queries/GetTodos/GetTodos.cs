@@ -1,12 +1,11 @@
 ﻿using Feminancials.Application.Common.Interfaces;
 using Feminancials.Application.Common.Models;
 using Feminancials.Application.Common.Security;
-using Feminancials.Domain.Constants;
 using Feminancials.Domain.Enums;
 
 namespace Feminancials.Application.TodoLists.Queries.GetTodos;
 
-[Authorize(Policy = Policies.CanAccessCollective)]
+[Authorize]
 public record GetTodosQuery : IRequest<TodosVm>;
 
 public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>

@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Feminancials.Domain</RootNamespace>
-    <AssemblyName>Feminancials.Domain</AssemblyName>
+    <RootNamespace>Feminancial.Domain</RootNamespace>
+    <AssemblyName>Feminancial.Domain</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" />
   </ItemGroup>
 
 </Project>

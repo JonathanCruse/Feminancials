@@ -1,9 +1,7 @@
 ﻿using Feminancials.Application.Common.Interfaces;
-using Feminancials.Application.Common.Security;
-using Feminancials.Domain.Constants;
 
 namespace Feminancials.Application.TodoLists.Commands.UpdateTodoList;
-[Authorize(Policy = Policies.CanAccessCollective)]
+
 public record UpdateTodoListCommand : IRequest
 {
     public int Id { get; init; }

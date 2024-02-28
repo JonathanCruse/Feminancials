@@ -1,21 +1,18 @@
-﻿using Feminancials.Domain.Entities;
-using Feminancials.Domain.Entities.FinancialsAggregate;
-using Feminancials.Domain.Entities.UserAggregate;
-using Feminancials.Infrastructure.Identity;
+﻿using Feminancial.Domain.Entities;
+using Feminancials.Domain.Entities;
 
 namespace Feminancials.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<TodoList> TodoLists { get; }
+    public DbSet<TodoList> TodoLists { get; }
 
-    DbSet<TodoItem> TodoItems { get; }
-    DbSet<Collective> Collectives { get; }
-    DbSet<Expense> Expenses { get; }
-    DbSet<Transaction> Transactions { get; }
-    DbSet<Feminist> Feminists { get; }
-    DbSet<FeministsCollectives> FeministsCollectives { get; }
-
+    public DbSet<TodoItem> TodoItems { get; }
+    public DbSet<Collective> Collectives { get; }
+    public DbSet<Feminist> Feminists { get; }
+    public DbSet<FeministCollective> FeministCollectives { get; }
+    public DbSet<Transaction> Transactions { get; }
+    public DbSet<Expense> Expenses { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

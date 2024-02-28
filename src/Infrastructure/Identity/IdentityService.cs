@@ -1,5 +1,6 @@
 ﻿using Feminancials.Application.Common.Interfaces;
 using Feminancials.Application.Common.Models;
+using Feminancials.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
